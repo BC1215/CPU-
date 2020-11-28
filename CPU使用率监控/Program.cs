@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.Extensions.Configuration;
 
 namespace CPU使用率监控
 {
@@ -6,7 +7,10 @@ namespace CPU使用率监控
     {
         static void Main(string[] args)
         {
-            var monitor = new CpuUsageMonitor("Tobii.Eyex.Engine");
+            IConfiguration config = new ConfigurationBuilder()
+                .AddJsonFile("config.json", true, true)
+                .Build();
+            var monitor = new CpuUsageMonitor(config["processName"]);
             monitor.UsageUpdate += Monitor_UsageUpdate;
             monitor.Start();
 
